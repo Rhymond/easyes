@@ -213,8 +213,8 @@ function App() {
             {" "}
             <TextEdit>00</TextEdit>
             {" "}
-            darbuotojų. Įmonė turi sukūrusi savo teikiamų
-            paslaugų ir parduodamų produktų internetinį tinklalapį (www.ivestaspavadinimas.lt.)
+            darbuotojų(-as). Įmonė turi sukūrusi savo teikiamų
+            paslaugų ir parduodamų produktų internetinį tinklalapį (www.ivestaspavadinimas.lt)
             su tikslu sėkmingai ir efektyviai vykdyti veiklą. Projektu pareiškėjas siekia
             {" "}
             <SelectEdit
