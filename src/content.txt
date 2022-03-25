@@ -1,1 +1,0 @@
-Pagrindinė UAB "<% input::company::Įmonės pavadinimas %>" veikla – <% input::activity::Aprašykite veiklą %>

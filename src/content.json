@@ -1,0 +1,1 @@
+"Pagrindinė UAB \"<% input::company::Įmonės pavadinimas %>\" veikla – <% input::activity::Aprašykite veiklą %> <% value::company::Įmonės pavadinimas %>"

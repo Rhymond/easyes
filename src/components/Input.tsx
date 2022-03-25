@@ -3,15 +3,14 @@ import ContentEditable, {ContentEditableEvent} from "react-contenteditable";
 
 type InputProps = {
   onFocus?: () => void;
-  onBlur?: () => void;
+  onBlur?: (val: string) => void;
 }
 
-const Input: FC<InputProps> = ({ onFocus = () => {}, onBlur = () => {}, children }) => {
+const Input: FC<InputProps> = ({ onFocus = () => {}, onBlur = () => {}, children, ...props }) => {
   const [selected, setSelected] = useState(false);
   const [val, setVal] = useState(children as string);
   const [width, setWidth] = useState("auto")
   const ref = React.useRef<HTMLSpanElement>(null)
-
 
   const handleChange = (evt: ContentEditableEvent) => {
     setVal(evt.target.value)
@@ -22,12 +21,13 @@ const Input: FC<InputProps> = ({ onFocus = () => {}, onBlur = () => {}, children
     if (val === "" || val === children) {
       setSelected(false)
       setVal(children as string);
-      onBlur();
+      setWidth("auto");
+      onBlur(val as string);
       return
     }
 
     setWidth(ref.current?.clientWidth + "px");
-    onBlur();
+    onBlur(val as string);
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLSpanElement> = (e) => {
@@ -50,6 +50,7 @@ const Input: FC<InputProps> = ({ onFocus = () => {}, onBlur = () => {}, children
   return (
     <div style={{ minWidth: width }} className="relative inline-block">
       <ContentEditable
+        {...props}
         innerRef={ref}
         html={val}
         spellCheck="false"
@@ -59,7 +60,7 @@ const Input: FC<InputProps> = ({ onFocus = () => {}, onBlur = () => {}, children
         onKeyDown={handleKeyDown}
         tagName='span'
         className={
-          `focus-visible:outline-0 inline-block ${selected && "w-full"} px-3 leading-8 rounded 
+          `focus-visible:outline-0 inline-block px-3 leading-8 rounded 
           ${selected ?
             "bg-gray-50 border-b-2 border-gray-400" :
             "cursor-pointer bg-red-100 border-b-2 border-red-700"}

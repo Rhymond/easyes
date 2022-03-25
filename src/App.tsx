@@ -1,5 +1,8 @@
-import React, {FC, useEffect, useRef, useState} from "react";
-import ContentEditable from "react-contenteditable";
+import React, {useState} from "react";
+import Info from "./components/Info";
+import content from "./content.json";
+import reactStringReplace from 'react-string-replace';
+import Input from "./components/Input";
 
 type example = {
   name: string;
@@ -7,55 +10,32 @@ type example = {
   description: string;
 }
 
+const templateRegex = /<%(.*?)%>/g;
+
 function App() {
   const [examples, setExamples] = useState<example[]>([])
   const [selection, setSelection] = useState("");
-  const examples1: example[] = [
-    {
-      name: "Aprašymas",
-      description: "Assumenda numquam consequatur maxime numquam. Ducimus sint magnam fugit ut consectetur inventore repudiandae fugit. Accusamus voluptatibus"
-    },
-    {
-      name: "Pvz 1",
-      example: true,
-      description: "reklaminių klipų sklaidos palaugų teikimas per lauko ekranus.",
-    },
-    {
-      name: "Pvz 2",
-      example: true,
-      description: " medienos apdirbimas, obliavimas, pjaustymas.",
-    },
-    {
-      name: "Pvz 3",
-      example: true,
-      description: "kokybiškos restoranų įrangos tiekimas bei priežiūra",
-    }
-  ]
+  const [form, setForm] = useState({} as Record<string, string>);
 
-  const examples2: example[] = [
-    {
-      name: "Pvz 1",
-      example: true,
-      description: "Papildomus serverius",
-    },
-    {
-      name: "Pvz 2",
-      example: true,
-      description: "Medienos apdirbimo stakles",
-    },
-    {
-      name: "Pvz 3",
-      example: true,
-      description: "Restoranų įrangą",
+  const replaceHandler = (match: string, i: number) => {
+    const v = match.trim().split("::");
+    switch (v[0]) {
+      case "input":
+        return (
+          <Input key={`input-${i}`} onBlur={(val) => {
+            setForm({...form, [v[1]]: val})
+          }}>
+            {v[2]}
+          </Input>
+        )
+      case "value":
+        return (
+          <span>{form[v[1]] || v[2]}</span>
+        )
     }
-  ]
+  }
 
-  const selectExamples: example[] = [
-    {
-      name: "Aprašymas",
-      description: "Assumenda numquam consequatur maxime numquam. Ducimus sint magnam fugit ut consectetur inventore repudiandae fugit. Accusamus voluptatibus"
-    },
-  ]
+  console.table(form);
 
   return (
     <div className="App">
@@ -63,48 +43,11 @@ function App() {
         <div className="flex">
           <div className="w-2/3 pr-10 text-lg leading-10">
             <div className="text-2xl mb-5">Projekto aprašymas</div>
-            Pagrindinė UAB "
-            <TextEdit>Įmonės pavadinimas</TextEdit>
-            " veikla -
-            {" "}
-            <TextEdit
-              onFocus={() => setExamples(examples1)}
-              onBlur={() => setExamples([])}
-            >
-              Įmonės veikla
-            </TextEdit>
-            {" "}
-            ir 2021 metais įmonėje vidutiniškai dirbo
-            {" "}
-            <TextEdit>00</TextEdit>
-            {" "}
-            darbuotojų(-as). Įmonė turi sukūrusi savo teikiamų
-            paslaugų ir parduodamų produktų internetinį tinklalapį (www.ivestaspavadinimas.lt)
-            su tikslu sėkmingai ir efektyviai vykdyti veiklą. Projektu pareiškėjas siekia
-            {" "}
-            <SelectEdit
-              onFocus={() => setExamples(selectExamples)}
-              onBlur={() => setExamples([])}
-              onChange={(val) => setSelection(val)}
-              placeholder="Pasirinkite veiklą"
-              options={["Atnaujinti", "Pakeisti", "Įrengti", "Sukurti"]}
-            />
-            {" "}
-            {selection === "Atnaujinti" && (
-              <>
-                {" "}
-                turimą įrangą įsigyjant
-                {" "}
-                <TextEdit
-                  onFocus={() => setExamples(examples2)}
-                  onBlur={() => setExamples([])}
-                >Aprašykite ką ketinate įsigyti</TextEdit>
-              </>
-            )}
+            {reactStringReplace(content, templateRegex, replaceHandler)}
           </div>
           <div className="w-1/3">
             {examples.map((e, i) => (
-              <Info example={e.example} key={`example-${i}`} title={e.name}>{e.description}</Info>
+              <Info isDescription={false} key={`example-${i}`} title={e.name}>{e.description}</Info>
             ))}
           </div>
         </div>
