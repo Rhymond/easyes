@@ -1,53 +1,86 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Info from "./components/Info";
-import content from "./content.json";
+import definitionsJSON from "./definitions.json";
+import content from "./content";
+import Handlebars from "handlebars";
 import reactStringReplace from 'react-string-replace';
 import Input from "./components/Input";
+import Select from "./components/Select";
 
-type example = {
-  name: string;
-  example?: boolean;
-  description: string;
+const templateRegex = /\{-(.*?)-\}/g;
+
+type Definition = {
+  type: string;
+  default: string;
+  examples?: string[];
+  options?: string[];
 }
 
-const templateRegex = /<%(.*?)%>/g;
+const definitions: Record<string, Definition> = definitionsJSON;
+let defaults: Record<string, string> = {};
+for (const key in definitions) {
+  defaults[key] = definitions[key].default;
+}
 
 function App() {
-  const [examples, setExamples] = useState<example[]>([])
-  const [selection, setSelection] = useState("");
-  const [form, setForm] = useState({} as Record<string, string>);
+  const [examples, setExamples] = useState<string[]>([])
+  const [form, setForm] = useState(defaults);
 
   const replaceHandler = (match: string, i: number) => {
-    const v = match.trim().split("::");
-    switch (v[0]) {
+    if (!(match in definitions)) return
+    const def = definitions[match];
+    switch (def.type) {
       case "input":
         return (
-          <Input key={`input-${i}`} onBlur={(val) => {
-            setForm({...form, [v[1]]: val})
-          }}>
-            {v[2]}
+          <Input
+            key={`input-${i}`}
+            onFocus={() => {
+              if (def.examples) setExamples(def.examples)
+            }}
+            onBlur={(val) => {
+              setExamples([]);
+              setForm({...form, [match]: val})
+            }}
+          >
+            {def.default}
           </Input>
         )
-      case "value":
+      case "select":
         return (
-          <span>{form[v[1]] || v[2]}</span>
+          <Select
+            onFocus={() => {
+              if (def.examples) setExamples(def.examples)
+            }}
+            onBlur={(val) => {
+              setExamples([]);
+            }}
+            onChange={(val) => {
+              setForm({...form, [match]: val})
+            }}
+            placeholder={def.default}
+            options={def.options || []}
+          />
         )
     }
   }
 
-  console.table(form);
+  const tpl = Handlebars.compile(content);
+  let replaced = reactStringReplace(tpl(form), templateRegex, replaceHandler)
+  replaced = reactStringReplace(replaced, /(\n)/g, (match, i) => {
+    return <br />
+  })
 
   return (
     <div className="App">
       <div className="max-w-6xl mx-auto mt-10">
         <div className="flex">
-          <div className="w-2/3 pr-10 text-lg leading-10">
+          <div className="w-3/4 pr-10 text-lg leading-10">
             <div className="text-2xl mb-5">Projekto aprašymas</div>
-            {reactStringReplace(content, templateRegex, replaceHandler)}
+            {replaced}
           </div>
-          <div className="w-1/3">
+          <div className="w-1/4">
             {examples.map((e, i) => (
-              <Info isDescription={false} key={`example-${i}`} title={e.name}>{e.description}</Info>
+              <Info isDescription={false} key={`example-${i}`} title={`Pavizdys ${i+1}`}>{e}</Info>
             ))}
           </div>
         </div>

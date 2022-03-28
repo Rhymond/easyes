@@ -8,12 +8,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ejs": "^3.1.6",
+    "handlebars": "^4.7.7",
     "react": "^17.0.2",
     "react-contenteditable": "^3.3.6",
     "react-dom": "^17.0.2",
     "react-string-replace": "^1.0.0"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.0",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",

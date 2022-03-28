@@ -1,8 +1,8 @@
-import React, {ChangeEventHandler, FC, useState} from "react";
+import React, {ChangeEventHandler, FC, FocusEventHandler, useState} from "react";
 
 type SelectProps = {
   onFocus: () => void,
-  onBlur: () => void,
+  onBlur: (val: string) => void,
   onChange: (val: string) => void,
   placeholder: string;
   options: string[];
@@ -18,8 +18,8 @@ const Select: FC<SelectProps> = ({ onChange, onFocus, onBlur, placeholder, optio
     onFocus();
   }
 
-  const handleBlur = () => {
-    onBlur();
+  const handleBlur: FocusEventHandler<HTMLSelectElement> = (e) => {
+    onBlur(e.target.value);
   };
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {

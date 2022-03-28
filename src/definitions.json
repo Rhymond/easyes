@@ -1,0 +1,107 @@
+{
+  "company": {
+    "type": "input",
+    "default": "Įmonės pavadinimas"
+  },
+  "activity": {
+    "type": "input",
+    "default": "Aprašykite veiklą",
+    "examples": [
+      "medienos apdirbimas, obliavimas, pjaustymas.",
+      "Renginių organizavimas",
+      "Leidybos paslaugos."
+    ]
+  },
+  "volume": {
+    "type": "input",
+    "default": "00",
+    "examples": [
+      "10 krovininių automobilių",
+      "50 parduotuvių visoje Lietuvoje",
+      "Eksportuojamos prekės į 13 ES šalių"
+    ]
+  },
+  "goal": {
+    "type": "select",
+    "default": "projekto tikslas",
+    "options": [
+      "pakeisti",
+      "atnaujinti",
+      "pirkti",
+      "organizuoti",
+      "išplėsti",
+      "sukurti",
+      "įdiegti"
+    ]
+  },
+  "goalDescription": {
+    "type": "input",
+    "default": "Aprašykite tikslą",
+    "examples": [
+      "Įsigyti naują gamybos įrangą.",
+      "Sukurti naują pramoginį žaidimą.",
+      "Įsigyti 5 Renault automobilius"
+    ]
+  },
+  "goalAction": {
+    "type": "input",
+    "default": "Kaip įgyvendinama",
+    "examples": [
+      "Sukurta nauja programinė įranga",
+      "Isigyta inovatyvi įranga",
+      "Sukurta elektroninė parduotuvė."
+    ]
+  },
+  "commodityType": {
+    "type": "select",
+    "default": "tipas",
+    "options": [
+      "Paslaugos",
+      "Produkto",
+      "Prekės"
+    ]
+  },
+  "payoff": {
+    "type": "input",
+    "default": "Įveskite produkto/prekės tikslą",
+    "examples": [
+      "Numatomų investicijų atsiperkamumu.",
+      "Kuriamo/diegiamo produkto/prekės paklausa"
+    ]
+  },
+  "seekFor": {
+    "type": "input",
+    "default": "Projekto siekis",
+    "examples": [
+      "Ženkliai sutaupyti kuro išlaidas",
+      "Sukurti efektyvią valdymo sistemą",
+      "Sugeneruoti daugiau pajamų"
+    ]
+  },
+  "personName": {
+    "type": "input",
+    "default": "Vardas Pavardė"
+  },
+  "personTitle": {
+    "type": "select",
+    "default": "Pareigybė",
+    "options": [
+      "Direktorius",
+      "Projekto vadovas",
+      "Buhalteris"
+    ]
+  },
+  "personActivity": {
+    "type": "input",
+    "default": "Veikla",
+    "examples": [
+      "Naujų pramoginių žaidimų kūrimais",
+      "Automobilių parko atnaujinimo sprendimais",
+      "Naujos gamybos įrangos įsigyjimais."
+    ]
+  },
+  "companyAge": {
+    "type": "input",
+    "default": "Įmonės amžius"
+  }
+}
